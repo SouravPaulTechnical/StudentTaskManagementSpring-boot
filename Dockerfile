@@ -1,8 +1,17 @@
+FROM eclipse-temurin:21 AS build
+
+WORKDIR /app
+
+COPY . .
+
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
+
 FROM eclipse-temurin:21
 
 WORKDIR /app
 
-COPY target/StudentTaskManagement-0.0.1-SNAPSHOT.jar.jar
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
